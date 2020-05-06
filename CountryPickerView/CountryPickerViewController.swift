@@ -9,7 +9,7 @@
 import UIKit
 
 public class CountryPickerViewController: UITableViewController {
-
+    
     public var searchController: UISearchController?
     fileprivate var searchResults = [Country]()
     fileprivate var isSearchMode = false
@@ -37,7 +37,7 @@ public class CountryPickerViewController: UITableViewController {
         prepareNavItem()
         prepareSearchBar()
     }
-   
+    
 }
 
 // UI Setup
@@ -74,7 +74,7 @@ extension CountryPickerViewController {
     
     func prepareNavItem() {
         navigationItem.title = dataSource.navigationTitle
-
+        
         // Add a close button if this is the root view controller
         if navigationController?.viewControllers.count == 1 {
             let closeButton = dataSource.closeButtonNavigationItem
@@ -96,7 +96,7 @@ extension CountryPickerViewController {
         searchController?.definesPresentationContext = true
         searchController?.searchBar.delegate = self
         searchController?.delegate = self
-
+        
         switch searchBarPosition {
         case .tableViewHeader: tableView.tableHeaderView = searchController?.searchBar
         case .navigationBar: navigationItem.titleView = searchController?.searchBar
@@ -128,7 +128,7 @@ extension CountryPickerViewController {
         
         let country = isSearchMode ? searchResults[indexPath.row]
             : countries[sectionsTitles[indexPath.section]]![indexPath.row]
-
+        
         var name = country.localizedName(dataSource.localeForCountryNameInList) ?? country.name
         if dataSource.showCountryCodeInList {
             name = "\(name) (\(country.code))"
@@ -136,13 +136,13 @@ extension CountryPickerViewController {
         if dataSource.showPhoneCodeInList {
             name = "\(name) (\(country.phoneCode))"
         }
-//        cell.imageView?.image = country.flag
-//
-//        cell.flgSize = dataSource.cellImageViewSize
-//        cell.imageView?.clipsToBounds = true
-//
-//        cell.imageView?.layer.cornerRadius = dataSource.cellImageViewCornerRadius
-//        cell.imageView?.layer.masksToBounds = true
+        //        cell.imageView?.image = country.flag
+        //
+        //        cell.flgSize = dataSource.cellImageViewSize
+        //        cell.imageView?.clipsToBounds = true
+        //
+        //        cell.imageView?.layer.cornerRadius = dataSource.cellImageViewCornerRadius
+        //        cell.imageView?.layer.masksToBounds = true
         
         cell.textLabel?.text = name
         cell.textLabel?.font = dataSource.cellLabelFont
@@ -160,14 +160,15 @@ extension CountryPickerViewController {
     }
     
     override public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if isSearchMode {
-            return nil
-        } else {
-            if hasPreferredSection {
-                return Array<String>(sectionsTitles.dropFirst())
-            }
-            return sectionsTitles
-        }
+        return nil
+        //        if isSearchMode {
+        //            return nil
+        //        } else {
+        //            if hasPreferredSection {
+        //                return Array<String>(sectionsTitles.dropFirst())
+        //            }
+        //            return sectionsTitles
+        //        }
     }
     
     override public func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -177,7 +178,7 @@ extension CountryPickerViewController {
 
 //MARK:- UITableViewDelegate
 extension CountryPickerViewController {
-
+    
     override public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let header = view as? UITableViewHeaderFooterView {
             header.textLabel?.font = dataSource.sectionTitleLabelFont
@@ -187,11 +188,18 @@ extension CountryPickerViewController {
         }
     }
     
+    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if(section == 0){
+            return 40
+        }
+        return 20.0
+    }
+    
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let country = isSearchMode ? searchResults[indexPath.row]
             : countries[sectionsTitles[indexPath.section]]![indexPath.row]
-
+        
         searchController?.isActive = false
         searchController?.dismiss(animated: false, completion: nil)
         
@@ -223,7 +231,7 @@ extension CountryPickerViewController: UISearchResultsUpdating {
             } else if let array = countries[String(text.capitalized[text.startIndex])] {
                 indexArray = array
             }
-
+            
             searchResults.append(contentsOf: indexArray.filter({
                 let name = ($0.localizedName(dataSource.localeForCountryNameInList) ?? $0.name).lowercased()
                 let code = $0.code.lowercased()
@@ -300,7 +308,7 @@ class CountryPickerViewDataSourceInternal: CountryPickerViewDataSource {
     var sectionTitleLabelFont: UIFont {
         return view.dataSource?.sectionTitleLabelFont(in: view) ?? sectionTitleLabelFont(in: view)
     }
-
+    
     var sectionTitleLabelColor: UIColor? {
         return view.dataSource?.sectionTitleLabelColor(in: view)
     }
