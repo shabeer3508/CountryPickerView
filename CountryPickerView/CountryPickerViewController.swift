@@ -136,13 +136,13 @@ extension CountryPickerViewController {
         if dataSource.showPhoneCodeInList {
             name = "\(name) (\(country.phoneCode))"
         }
-        cell.imageView?.image = country.flag
-        
-        cell.flgSize = dataSource.cellImageViewSize
-        cell.imageView?.clipsToBounds = true
-
-        cell.imageView?.layer.cornerRadius = dataSource.cellImageViewCornerRadius
-        cell.imageView?.layer.masksToBounds = true
+//        cell.imageView?.image = country.flag
+//
+//        cell.flgSize = dataSource.cellImageViewSize
+//        cell.imageView?.clipsToBounds = true
+//
+//        cell.imageView?.layer.cornerRadius = dataSource.cellImageViewCornerRadius
+//        cell.imageView?.layer.masksToBounds = true
         
         cell.textLabel?.text = name
         cell.textLabel?.font = dataSource.cellLabelFont
